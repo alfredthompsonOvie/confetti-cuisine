@@ -1,8 +1,14 @@
 // import './style.css'
 
 import express from "express";
-import expressLayouts from "express-ejs-layouts";
-import { homeController } from "./controllers/homeController.js";
+import layouts from "express-ejs-layouts";
+import {
+  homeController,
+  showCourses,
+  showSignUp,
+  postedSignUpForm,
+} from "./controllers/homeController.js";
+import { respondNoResourceFound, respondInternalError } from "./controllers/errorController.js";
 
 const port = 5173;
 const app = express();
@@ -10,12 +16,16 @@ const app = express();
 app.set("port", process.env.PORT || port);
 app.set("view engine", "ejs");
 
-app.use(expressLayouts);
+app.use(express.static("public"));
+app.use(layouts);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 
 app.get('/', homeController);
+app.get('/courses', showCourses);
+app.get('/contact', showSignUp);
+app.post('/contact', postedSignUpForm);
 
 app.post("/", (req, res) => {
   console.log(req.body);
@@ -36,6 +46,8 @@ app.get("/items/:vegetable", (req, res) => {
   res.send(`This is the page for ${veg}`)
 });
 
+app.use(respondNoResourceFound);
+app.use(respondInternalError);
 
 app.listen(app.get("port"), () => {
   console.log(`Server running at http://localhost:${ app.get("port")}`);
