@@ -1,12 +1,20 @@
 // import mongoose from "mongoose";
 import mongoose from "mongoose";
+const { Schema } = mongoose;
 
-const mongoose = mongoose();
+mongoose.connect("mongodb://127.0.0.1:27017/recipe_db");
+const db = mongoose.connection;
 
-const subscriberSchema = mongoose.Schema({
+const subscriberSchema = new Schema({
   name: String,
   email: String,
 });
-const model = mongoose.model("Subcriber", subscriberSchema)
-export { model };
+// zipCode: Number
+const Subcriber = mongoose.model("Subcriber", subscriberSchema)
+
+db.once("open", () => {
+  console.log("Successfully connected to MongoDB using Mongoose!");
+});
+
+export { Subcriber };
 

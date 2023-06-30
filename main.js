@@ -10,6 +10,8 @@ import {
 } from "./controllers/homeController.js";
 import { respondNoResourceFound, respondInternalError } from "./controllers/errorController.js";
 
+import { Subcriber } from "./models/subcriber.js";
+
 const port = 5173;
 const app = express();
 
@@ -45,6 +47,20 @@ app.get("/items/:vegetable", (req, res) => {
 
   res.send(`This is the page for ${veg}`)
 });
+
+// subscriber js
+
+// Subcriber.create({
+//   name: "The Batman",
+//   email: "batman@gmail.com"
+// }
+// )
+
+const subscriber1 = new Subcriber({
+  name: "alfred thompson",
+  email: "tom@gmail.com"
+});
+subscriber1.save();
 
 app.use(respondNoResourceFound);
 app.use(respondInternalError);
