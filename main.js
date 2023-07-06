@@ -10,7 +10,8 @@ import {
 } from "./controllers/homeController.js";
 import { respondNoResourceFound, respondInternalError } from "./controllers/errorController.js";
 
-import { Subcriber } from "./models/subcriber.js";
+// import { Subscriber } from "./models/subscriber.js";
+import { getAllSubscribers } from "./controllers/subscriberController.js";
 
 const port = 5173;
 const app = express();
@@ -27,6 +28,10 @@ app.use(express.json());
 app.get('/', homeController);
 app.get('/courses', showCourses);
 app.get('/contact', showSignUp);
+app.get('/subscribers', getAllSubscribers, (req, res, next) => {
+  // console.log(req.data);
+  res.send(req.data);
+});
 app.post('/contact', postedSignUpForm);
 
 app.post("/", (req, res) => {
@@ -35,18 +40,18 @@ app.post("/", (req, res) => {
   res.send('Post Successful!')
 })
 
-app.get("/items/:vegetable", (req, res) => {
-  console.log("------------veg--------------");
-  console.log(req.params);
-  console.log(req.body);
-  console.log(req.url);
-  console.log(req.query);
+// app.get("/items/:vegetable", (req, res) => {
+//   console.log("------------veg--------------");
+//   console.log(req.params);
+//   console.log(req.body);
+//   console.log(req.url);
+//   console.log(req.query);
 
 
-  let veg = req.params.vegetable;
+//   let veg = req.params.vegetable;
 
-  res.send(`This is the page for ${veg}`)
-});
+//   res.send(`This is the page for ${veg}`)
+// });
 
 // subscriber js
 
@@ -56,11 +61,13 @@ app.get("/items/:vegetable", (req, res) => {
 // }
 // )
 
-const subscriber1 = new Subcriber({
-  name: "alfred thompson",
-  email: "tom@gmail.com"
-});
-subscriber1.save();
+// const subscriber1 = new Subscriber({
+//   name: "alfred thompson",
+//   email: "tom@gmail.com"
+// });
+// subscriber1.save();
+
+// Subscriber.deleteMany({name: /alfred thompson/});
 
 app.use(respondNoResourceFound);
 app.use(respondInternalError);
